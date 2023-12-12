@@ -7,5 +7,6 @@ router.get("/", languageController.getLanguages);
 router.get("/:id", languageController.getOneLanguage);
 router.post("/", languageController.addLanguage);
 router.delete("/:id", languageController.deleteLanguage);
+router.put("/:id", languageController.updateLanguage);
 
 export default router;
