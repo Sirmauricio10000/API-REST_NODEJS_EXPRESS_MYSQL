@@ -5,7 +5,6 @@ const getLanguages= async (req, res)=>{
 
         const connection = await getConnection();
         const [row, fields] = await connection.query("SELECT id, name, programmers FROM language");
-        console.log(row);
         res.json(row);
 
     } catch(error){
@@ -21,7 +20,6 @@ const getOneLanguage= async (req, res)=>{
         const {id} = req.params;
         const connection = await getConnection();
         const [row, fields] = await connection.query("SELECT id, name, programmers FROM language WHERE id = ?", id);
-        console.log(row);
         res.json(row);
 
     } catch(error){
@@ -48,8 +46,24 @@ const addLanguage= async (req, res)=>{
         };
 
         const connection = await getConnection();
-        const result = await connection.query("INSERT INTO language SET ?", language)
+        await connection.query("INSERT INTO language SET ?", language)
         res.json({message: "language added succesfully."});
+
+    } catch(error){
+
+        res.status(500);
+        res.send(error.message);
+
+    }
+};
+
+
+const deleteLanguage= async (req, res)=>{
+    try{
+        const {id} = req.params;
+        const connection = await getConnection();
+        const [row, fields] = await connection.query("DELETE FROM language WHERE id = ?", id);
+        res.json(row);
 
     } catch(error){
 
@@ -62,5 +76,6 @@ const addLanguage= async (req, res)=>{
 export const methods = {
     getLanguages,
     addLanguage,
-    getOneLanguage
+    getOneLanguage,
+    deleteLanguage
 };

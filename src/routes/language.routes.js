@@ -6,5 +6,6 @@ const router=Router();
 router.get("/", languageController.getLanguages);
 router.get("/:id", languageController.getOneLanguage);
 router.post("/", languageController.addLanguage);
+router.delete("/:id", languageController.deleteLanguage);
 
 export default router;
