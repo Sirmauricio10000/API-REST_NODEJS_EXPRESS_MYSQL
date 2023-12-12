@@ -16,14 +16,32 @@ const getLanguages= async (req, res)=>{
     }
 };
 
+const getOneLanguage= async (req, res)=>{
+    try{
+        const {id} = req.params;
+        const connection = await getConnection();
+        const [row, fields] = await connection.query("SELECT id, name, programmers FROM language WHERE id = ?", id);
+        console.log(row);
+        res.json(row);
+
+    } catch(error){
+
+        res.status(500);
+        res.send(error.message);
+
+    }
+};
+
 
 const addLanguage= async (req, res)=>{
     try{
-        const {name, programmers } = req.body;
 
-        if(name === undefined || programmers === undefined){
-            res.status(400).json({message: "Bad Request. Please fill all field."})
+        if (name === undefined || programmers === undefined){
+            res.status(400);
+            res.json({message: "Bad request, check values."});
         }
+
+        const {name, programmers } = req.body;
         
         const language={
             name, programmers
@@ -31,7 +49,7 @@ const addLanguage= async (req, res)=>{
 
         const connection = await getConnection();
         const result = await connection.query("INSERT INTO language SET ?", language)
-        res.json({message: "language added succesfully."}, result);
+        res.json({message: "language added succesfully."});
 
     } catch(error){
 
@@ -43,5 +61,6 @@ const addLanguage= async (req, res)=>{
 
 export const methods = {
     getLanguages,
-    addLanguage
+    addLanguage,
+    getOneLanguage
 };
